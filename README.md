@@ -2,10 +2,9 @@
 Program that can compare Crystal reports templates
 
 How to use:
-1. You have to install Visual Studio 2010 or newer
-2. You have to install some kind of program that can compare two XML files (ex. KDiff)
-3. Download and install Crystal reports for Visual Studio (https://www.crystalreports.com/crystal-reports-visual-studio/)
-4. Now you can use rpt_diff.exe application 
+1. You have to install some kind of program that can compare two XML files (ex. KDiff)
+2. Download and install Crystal reports for .NET 64 bit (http://downloads.businessobjects.com/akdlm/crnetruntime/clickonce/CRRuntime_64bit_13_0_22.msi)
+3. Now you can use rpt_diff.exe application 
 
 Usage of the rpt_diff.exe: (/rpt_diff/rpt_diff/bin/Release/rpt_diff.exe)
   - rpt_diff.exe DiffUtilPath RPTPath1 [RPTPath2] ModelNumber
