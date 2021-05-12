@@ -342,6 +342,29 @@ namespace rpt_diff
             xmlw.WriteStartElement("ParagraphElement");
             xmlw.WriteAttributeString("Kind", p.Kind.ToStringSafe());
             ProcessFontColor(p.FontColor, xmlw);
+            switch (p.Kind)
+            {
+                case CrParagraphElementKindEnum.crParagraphElementKindText:
+                    if (p is ParagraphTextElement pText)
+                    {
+                        xmlw.WriteElementString("Text", pText.Text);
+                    }
+                    break;
+                case CrParagraphElementKindEnum.crParagraphElementKindField:
+                    if (p is ParagraphFieldElement pField)
+                    {
+                        if (pField is FieldObject pFieldObject)
+                        {
+                            ProcessFieldFormat(pField.FieldFormat, xmlw, pFieldObject.FieldValueType);
+                        }
+                        xmlw.WriteElementString("FieldDataSource", pField.DataSource);
+                    }
+                    break;
+                case CrParagraphElementKindEnum.crParagraphElementKindTab:
+                default:
+                    Console.WriteLine($"Unhandled ParagraphElement Kind {p.Kind} {p.ClassName}");
+                    break;
+            }
             xmlw.WriteEndElement();
         }
 
