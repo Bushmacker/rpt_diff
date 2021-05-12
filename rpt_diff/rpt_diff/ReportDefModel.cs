@@ -227,7 +227,7 @@ namespace rpt_diff
                         ProcessPictureFormat(bfo.PictureFormat,xmlw);
                         break;
                     }
-                case CrReportObjectKindEnum.crReportObjectKindBox: 
+                case CrReportObjectKindEnum.crReportObjectKindBox:
                     {
                         BoxObject bo = (BoxObject)ro;
                         xmlw.WriteAttributeString("Bottom", bo.Bottom.ToStringSafe());
@@ -342,6 +342,29 @@ namespace rpt_diff
             xmlw.WriteStartElement("ParagraphElement");
             xmlw.WriteAttributeString("Kind", p.Kind.ToStringSafe());
             ProcessFontColor(p.FontColor, xmlw);
+            switch (p.Kind)
+            {
+                case CrParagraphElementKindEnum.crParagraphElementKindText:
+                    if (p is ParagraphTextElement pText)
+                    {
+                        xmlw.WriteElementString("Text", pText.Text);
+                    }
+                    break;
+                case CrParagraphElementKindEnum.crParagraphElementKindField:
+                    if (p is ParagraphFieldElement pField)
+                    {
+                        if (pField is FieldObject pFieldObject)
+                        {
+                            ProcessFieldFormat(pField.FieldFormat, xmlw, pFieldObject.FieldValueType);
+                        }
+                        xmlw.WriteElementString("FieldDataSource", pField.DataSource);
+                    }
+                    break;
+                case CrParagraphElementKindEnum.crParagraphElementKindTab:
+                default:
+                    Console.WriteLine($"Unhandled ParagraphElement Kind {p.Kind} {p.ClassName}");
+                    break;
+            }
             xmlw.WriteEndElement();
         }
 
@@ -406,12 +429,12 @@ namespace rpt_diff
                     }
                 case CrFieldValueTypeEnum.crFieldValueTypeDateField:
                     {
-                        ProcessDateFormat(ff.DateFormat, xmlw); 
+                        ProcessDateFormat(ff.DateFormat, xmlw);
                         break;
                     }
                 case CrFieldValueTypeEnum.crFieldValueTypeDateTimeField:
                     {
-                        ProcessDateTimeFormat(ff.DateTimeFormat, xmlw);    
+                        ProcessDateTimeFormat(ff.DateTimeFormat, xmlw);
                         break;
                     }
                 case CrFieldValueTypeEnum.crFieldValueTypeCurrencyField:
@@ -438,7 +461,6 @@ namespace rpt_diff
                     }
                 default:
                     {
-                        
                         break;
                     }
             }
@@ -485,7 +507,7 @@ namespace rpt_diff
             xmlw.WriteAttributeString("DayFormat", dff.DayFormat.ToStringSafe());
             xmlw.WriteAttributeString("DayOfWeekPosition", dff.DayOfWeekPosition.ToStringSafe());
             xmlw.WriteAttributeString("DayOfWeekSeparator", dff.DayOfWeekSeparator.ToStringSafe());
-            xmlw.WriteAttributeString("DayOfWeekType", dff.DayOfWeekType.ToStringSafe());            
+            xmlw.WriteAttributeString("DayOfWeekType", dff.DayOfWeekType.ToStringSafe());
             xmlw.WriteAttributeString("EraType", dff.EraType.ToStringSafe());
             xmlw.WriteAttributeString("MonthFormat", dff.MonthFormat.ToStringSafe());
             xmlw.WriteAttributeString("SystemDefaultType", dff.SystemDefaultType.ToStringSafe());
@@ -503,10 +525,10 @@ namespace rpt_diff
             xmlw.WriteAttributeString("EraTypeFormula", dff.ConditionFormulas[CrDateFieldFormatConditionFormulaTypeEnum.crDateFieldFormatConditionFormulaTypeEraType].Text);
             xmlw.WriteAttributeString("MonthFormatFormula", dff.ConditionFormulas[CrDateFieldFormatConditionFormulaTypeEnum.crDateFieldFormatConditionFormulaTypeMonthFormat].Text);
             xmlw.WriteAttributeString("SystemDefaultTypeFormula", dff.ConditionFormulas[CrDateFieldFormatConditionFormulaTypeEnum.crDateFieldFormatConditionFormulaTypeSystemDefaultType].Text);
-            xmlw.WriteAttributeString("YearFormatFormula", dff.ConditionFormulas[CrDateFieldFormatConditionFormulaTypeEnum.crDateFieldFormatConditionFormulaTypeYearFormat].Text);          
+            xmlw.WriteAttributeString("YearFormatFormula", dff.ConditionFormulas[CrDateFieldFormatConditionFormulaTypeEnum.crDateFieldFormatConditionFormulaTypeYearFormat].Text);
             xmlw.WriteEndElement();
         }
-        
+
         private static void ProcessNumericFormat(NumericFieldFormat nff, XmlWriter xmlw)
         {
             xmlw.WriteStartElement("NumericFieldFormat");
@@ -537,7 +559,7 @@ namespace rpt_diff
             xmlw.WriteAttributeString("RoundingFormatFormula", nff.ConditionFormulas[CrNumericFieldFormatConditionFormulaTypeEnum.crNumericFieldFormatConditionFormulaTypeRoundingFormat].Text);
             xmlw.WriteAttributeString("ThousandsSeparatorFormula", nff.ConditionFormulas[CrNumericFieldFormatConditionFormulaTypeEnum.crNumericFieldFormatConditionFormulaTypeThousandsSeparator].Text);
             xmlw.WriteAttributeString("ThousandSymbolFormula", nff.ConditionFormulas[CrNumericFieldFormatConditionFormulaTypeEnum.crNumericFieldFormatConditionFormulaTypeThousandSymbol].Text);
-            xmlw.WriteAttributeString("ZeroValueStringFormula", nff.ConditionFormulas[CrNumericFieldFormatConditionFormulaTypeEnum.crNumericFieldFormatConditionFormulaTypeZeroValueString].Text);           
+            xmlw.WriteAttributeString("ZeroValueStringFormula", nff.ConditionFormulas[CrNumericFieldFormatConditionFormulaTypeEnum.crNumericFieldFormatConditionFormulaTypeZeroValueString].Text);
             xmlw.WriteEndElement();
         }
 
@@ -566,7 +588,6 @@ namespace rpt_diff
 
         private static void ProcessTimeFormat(TimeFieldFormat tff, XmlWriter xmlw)
         {
-            
             xmlw.WriteStartElement("TimeFieldFormat");
             xmlw.WriteAttributeString("AMPMFormat", tff.AMPMFormat.ToStringSafe());
             xmlw.WriteAttributeString("AMString", tff.AMString);
@@ -671,6 +692,5 @@ namespace rpt_diff
             xmlw.WriteAttributeString("RecordNumberPerPageFormula", sf.ConditionFormulas[CrSectionAreaFormatConditionFormulaTypeEnum.crSectionAreaConditionFormulaTypeRecordNumberPerPage].Text);
             xmlw.WriteEndElement();
         }
-        
     }
 }
