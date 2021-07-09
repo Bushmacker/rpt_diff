@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 using CrystalDecisions.ReportAppServer.ReportDefModel;
@@ -224,7 +220,7 @@ namespace rpt_diff
                         xmlw.WriteAttributeString("OriginalWidth", bfo.OriginalWidth.ToStringSafe());
                         xmlw.WriteAttributeString("XScaling", bfo.XScaling.ToStringSafe());
                         xmlw.WriteAttributeString("YScaling", bfo.YScaling.ToStringSafe());
-                        ProcessPictureFormat(bfo.PictureFormat,xmlw);
+                        ProcessPictureFormat(bfo.PictureFormat, xmlw);
                         break;
                     }
                 case CrReportObjectKindEnum.crReportObjectKindBox:
@@ -461,6 +457,7 @@ namespace rpt_diff
                     }
                 default:
                     {
+
                         break;
                     }
             }
@@ -571,7 +568,7 @@ namespace rpt_diff
             xmlw.WriteAttributeString("MaxNumberOfLines", sff.MaxNumberOfLines.ToStringSafe());
             xmlw.WriteAttributeString("ReadingOrder", sff.ReadingOrder.ToStringSafe());
             xmlw.WriteAttributeString("TextFormat", sff.TextFormat.ToStringSafe());
-            ProcessIndentAndSpacingFormat(sff.IndentAndSpacingFormat,xmlw);
+            ProcessIndentAndSpacingFormat(sff.IndentAndSpacingFormat, xmlw);
             xmlw.WriteEndElement();
         }
 
@@ -588,6 +585,7 @@ namespace rpt_diff
 
         private static void ProcessTimeFormat(TimeFieldFormat tff, XmlWriter xmlw)
         {
+
             xmlw.WriteStartElement("TimeFieldFormat");
             xmlw.WriteAttributeString("AMPMFormat", tff.AMPMFormat.ToStringSafe());
             xmlw.WriteAttributeString("AMString", tff.AMString);
@@ -692,5 +690,6 @@ namespace rpt_diff
             xmlw.WriteAttributeString("RecordNumberPerPageFormula", sf.ConditionFormulas[CrSectionAreaFormatConditionFormulaTypeEnum.crSectionAreaConditionFormulaTypeRecordNumberPerPage].Text);
             xmlw.WriteEndElement();
         }
+
     }
 }

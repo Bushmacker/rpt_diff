@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 using CrystalDecisions.CrystalReports.Engine;
@@ -64,6 +60,7 @@ namespace rpt_diff
             foreach (Table tbl in tbls)
             {
                 ProcessTable(tbl, xmlw);
+                tbl.Dispose();
             }
             xmlw.WriteEndElement();
         }
@@ -83,6 +80,7 @@ namespace rpt_diff
             foreach (DatabaseFieldDefinition fld in flds)
             {
                 ProcessDatabaseFieldDefinition(fld, xmlw);
+                fld.Dispose();
             }
             xmlw.WriteEndElement();
         }
@@ -126,6 +124,7 @@ namespace rpt_diff
             foreach (TableLink link in links)
             {
                 ProcessTableLink(link, xmlw);
+                link.Dispose();
             }
 
             xmlw.WriteEndElement();
@@ -141,12 +140,14 @@ namespace rpt_diff
                 xmlw.WriteStartElement("SourceField");
                 xmlw.WriteAttributeString("FormulaName", sfld.FormulaName);
                 xmlw.WriteEndElement();
+                sfld.Dispose();
             }
             foreach (DatabaseFieldDefinition dfld in link.DestinationFields)
             {
                 xmlw.WriteStartElement("DestinationField");
                 xmlw.WriteAttributeString("FormulaName", dfld.FormulaName);
                 xmlw.WriteEndElement();
+                dfld.Dispose();
             }
             xmlw.WriteEndElement();
         }
@@ -177,6 +178,7 @@ namespace rpt_diff
             foreach (FormulaFieldDefinition ffd in ffds)
             {
                 ProcessFormulaFieldDefinition(ffd, xmlw);
+                ffd.Dispose();
             }
             xmlw.WriteEndElement();
         }
@@ -199,6 +201,7 @@ namespace rpt_diff
             foreach (GroupNameFieldDefinition gnfd in gnfds)
             {
                 ProcessGroupNameFieldDefinition(gnfd, xmlw);
+                gnfd.Dispose();
             }
             xmlw.WriteEndElement();
         }
@@ -222,6 +225,7 @@ namespace rpt_diff
             foreach (Group group in groups)
             {
                 ProcessGroup(group, xmlw);
+                group.Dispose();
             }
             xmlw.WriteEndElement();
         }
@@ -251,6 +255,7 @@ namespace rpt_diff
             foreach (ParameterFieldDefinition pfd in pfds)
             {
                 ProcessParameterFieldDefinition(pfd, xmlw);
+                pfd.Dispose();
             }
             xmlw.WriteEndElement();
         }
@@ -274,7 +279,7 @@ namespace rpt_diff
             }
             catch (NotSupportedException) //IsLinked not supported in subreport
             { }
-           
+
             xmlw.WriteAttributeString("Kind", pfd.Kind.ToStringSafe());
             xmlw.WriteAttributeString("MaximumValue", pfd.MaximumValue.ToStringSafe());
             xmlw.WriteAttributeString("MinimumValue", pfd.MinimumValue.ToStringSafe());
@@ -332,6 +337,7 @@ namespace rpt_diff
             foreach (RunningTotalFieldDefinition rtfd in rtfds)
             {
                 ProcessRunningTotalFieldDefinition(rtfd, xmlw);
+                rtfd.Dispose();
             }
             xmlw.WriteEndElement();
         }
@@ -366,18 +372,22 @@ namespace rpt_diff
         {
             FieldDefinition dfdCondition = condition as FieldDefinition;
             Group gCondition = condition as Group;
+            string formName;
             if (dfdCondition != null) // Field
             {
-                return dfdCondition.FormulaName;
+                formName = dfdCondition.FormulaName;
             }
             else if (gCondition != null) // Group
             {
-                return gCondition.ConditionField.FormulaName;
+                formName = gCondition.ConditionField.FormulaName;
             }
             else // Custom formula
             {
-                return condition.ToStringSafe();
+                formName = condition.ToStringSafe();
             }
+            dfdCondition.Dispose();
+            gCondition.Dispose();
+            return formName;
         }
 
         private static void ProcessSortFields(SortFields sfs, XmlWriter xmlw)
@@ -387,6 +397,7 @@ namespace rpt_diff
             foreach (SortField sf in sfs)
             {
                 ProcessSortField(sf, xmlw);
+                sf.Dispose();
             }
             xmlw.WriteEndElement();
         }
@@ -402,6 +413,7 @@ namespace rpt_diff
                 xmlw.WriteAttributeString("NumberOfTopOrBottomNGroups", tbnsf.NumberOfTopOrBottomNGroups.ToStringSafe());
                 xmlw.WriteAttributeString("SortDirection", tbnsf.SortDirection.ToStringSafe());
                 xmlw.WriteAttributeString("SortType", tbnsf.SortType.ToStringSafe());
+                tbnsf.Dispose();
             }
             else
             {
@@ -419,6 +431,7 @@ namespace rpt_diff
             foreach (SQLExpressionFieldDefinition sefd in sexfds)
             {
                 ProcessSQLExpressionFieldDefinition(sefd, xmlw);
+                sefd.Dispose();
             }
             xmlw.WriteEndElement();
         }
@@ -441,6 +454,7 @@ namespace rpt_diff
             foreach (SummaryFieldDefinition sfd in sfds)
             {
                 ProcessSummaryFieldDefinition(sfd, xmlw);
+                sfd.Dispose();
             }
             xmlw.WriteEndElement();
         }
@@ -525,6 +539,7 @@ namespace rpt_diff
             foreach (Area area in areas)
             {
                 ProcessArea(area, xmlw);
+                area.Dispose();
             }
             xmlw.WriteEndElement();
         }
@@ -559,6 +574,7 @@ namespace rpt_diff
             foreach (Section section in sections)
             {
                 ProcessSection(section, xmlw);
+                section.Dispose();
             }
             xmlw.WriteEndElement();
         }
@@ -580,6 +596,7 @@ namespace rpt_diff
             foreach (ReportObject ro in ros)
             {
                 ProcessReportObjects(ro, xmlw);
+                ro.Dispose();
             }
             xmlw.WriteEndElement();
         }
@@ -600,6 +617,7 @@ namespace rpt_diff
                     {
                         BlobFieldObject bfo = (BlobFieldObject)ro;
                         ProcessDatabaseFieldDefinition(bfo.DataSource, xmlw);
+                        bfo.Dispose();
                         break;
                     }
                 case ReportObjectKind.BoxObject:
@@ -613,7 +631,7 @@ namespace rpt_diff
                         xmlw.WriteAttributeString("LineStyle", bo.LineStyle.ToStringSafe());
                         xmlw.WriteAttributeString("LineThickness", bo.LineThickness.ToStringSafe());
                         xmlw.WriteAttributeString("Right", bo.Right.ToStringSafe());
-
+                        bo.Dispose();
                         break;
                     }
                 case ReportObjectKind.FieldHeadingObject:
@@ -623,6 +641,7 @@ namespace rpt_diff
                         xmlw.WriteAttributeString("Font", fho.Font.ToStringSafe());
                         xmlw.WriteAttributeString("Text", fho.Text);
                         xmlw.WriteAttributeString("FieldObjectName", fho.FieldObjectName);
+                        fho.Dispose();
                         break;
                     }
                 case ReportObjectKind.FieldObject:
@@ -635,6 +654,7 @@ namespace rpt_diff
                             ProcessFieldDefinition(fo.DataSource, xmlw, "DataSource");
                         }
                         ProcessFieldFormat(fo.FieldFormat, xmlw);
+                        fo.Dispose();
                         break;
                     }
                 case ReportObjectKind.LineObject:
@@ -647,6 +667,7 @@ namespace rpt_diff
                         xmlw.WriteAttributeString("LineStyle", lo.LineStyle.ToStringSafe());
                         xmlw.WriteAttributeString("LineThickness", lo.LineThickness.ToStringSafe());
                         xmlw.WriteAttributeString("Right", lo.Right.ToStringSafe());
+                        lo.Dispose();
                         break;
                     }
                 case ReportObjectKind.SubreportObject:
@@ -654,6 +675,7 @@ namespace rpt_diff
                         SubreportObject so = (SubreportObject)ro;
                         xmlw.WriteAttributeString("EnableOnDemand", so.EnableOnDemand.ToStringSafe());
                         xmlw.WriteAttributeString("SubreportName", so.SubreportName);
+                        ro.Dispose();
                         break;
                     }
                 case ReportObjectKind.TextObject:
@@ -662,6 +684,7 @@ namespace rpt_diff
                         xmlw.WriteAttributeString("Color", to.Color.ToStringSafe());
                         xmlw.WriteAttributeString("Font", to.Font.ToStringSafe());
                         xmlw.WriteAttributeString("Text", to.Text);
+                        to.Dispose();
                         break;
                     }
                 default:
@@ -823,6 +846,7 @@ namespace rpt_diff
             foreach (ReportDocument sub in subs)
             {
                 ProcessReport(sub, xmlw, "Subreport");
+                sub.Dispose();
             }
         }
         private static void ProcessSummaryInfo(SummaryInfo si, XmlWriter xmlw)
@@ -842,6 +866,7 @@ namespace rpt_diff
             foreach (XmlExportFormat xef in xefs)
             {
                 ProcessSavedXmlExportFormat(xef, xmlw);
+                xef.Dispose();
             }
             xmlw.WriteEndElement();
         }

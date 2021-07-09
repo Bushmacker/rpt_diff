@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 using CrystalDecisions.ReportAppServer.DataDefModel;
@@ -67,18 +63,18 @@ namespace rpt_diff
 
         private static void ProcessFields(Fields flds, XmlWriter xmlw, string type)
         {
-            xmlw.WriteStartElement(type+"Fields");
+            xmlw.WriteStartElement(type + "Fields");
             xmlw.WriteAttributeString("Count", flds.Count.ToStringSafe());
             foreach (Field fld in flds)
             {
-                ProcessField(fld, xmlw,type);
+                ProcessField(fld, xmlw, type);
             }
             xmlw.WriteEndElement();
         }
 
-        private static void ProcessField(Field fld, XmlWriter xmlw,string type)
+        private static void ProcessField(Field fld, XmlWriter xmlw, string type)
         {
-            xmlw.WriteStartElement(type+"Field");
+            xmlw.WriteStartElement(type + "Field");
             xmlw.WriteAttributeString("Description", fld.Description);
             xmlw.WriteAttributeString("FormulaForm", fld.FormulaForm);
             xmlw.WriteAttributeString("HeadingText", fld.HeadingText);
@@ -104,7 +100,7 @@ namespace rpt_diff
                         xmlw.WriteAttributeString("FormulaNullTreatment", ff.FormulaNullTreatment.ToStringSafe());
                         xmlw.WriteAttributeString("Text", ff.Text.ToStringSafe());
                         xmlw.WriteAttributeString("Syntax", ff.Syntax.ToStringSafe());
-                        
+
                         break;
                     }
                 case CrFieldKindEnum.crFieldKindGroupNameField:
@@ -127,14 +123,14 @@ namespace rpt_diff
                         xmlw.WriteAttributeString("DefaultValueSortOrder", pf.DefaultValueSortOrder.ToStringSafe());
                         xmlw.WriteAttributeString("EditMask", pf.EditMask);
                         xmlw.WriteAttributeString("IsEditableOnPanel", pf.IsEditableOnPanel.ToStringSafe());
-                        xmlw.WriteAttributeString("IsOptionalPrompt", pf.IsOptionalPrompt.ToStringSafe());  
+                        xmlw.WriteAttributeString("IsOptionalPrompt", pf.IsOptionalPrompt.ToStringSafe());
                         xmlw.WriteAttributeString("IsShownOnPanel", pf.IsShownOnPanel.ToStringSafe());
 
                         xmlw.WriteAttributeString("ParameterType", pf.ParameterType.ToStringSafe());
                         xmlw.WriteAttributeString("ReportName", pf.ReportName);
                         xmlw.WriteAttributeString("ValueRangeKind", pf.ValueRangeKind.ToStringSafe());
 
-                       
+
                         if (pf.CurrentValues != null)
                         {
                             ProcessValues(pf.CurrentValues, xmlw, "Current");
@@ -153,9 +149,9 @@ namespace rpt_diff
                         }
                         ProcessValue(pf.MaximumValue as Value, xmlw, "Maximum");
                         ProcessValue(pf.MinimumValue as Value, xmlw, "Minimum");
-                        
-                        
-                        break;   
+
+
+                        break;
                     }
                 case CrFieldKindEnum.crFieldKindRunningTotalField:
                     {
@@ -174,7 +170,7 @@ namespace rpt_diff
                         xmlw.WriteAttributeString("SpecialType", sf.SpecialType.ToStringSafe());
                         break;
                     }
-                case CrFieldKindEnum.crFieldKindSummaryField: 
+                case CrFieldKindEnum.crFieldKindSummaryField:
                     {
                         SummaryField smf = (SummaryField)fld;
                         if (smf.Group != null)
@@ -195,19 +191,19 @@ namespace rpt_diff
 
         private static void ProcessValues(Values values, XmlWriter xmlw, string type)
         {
-            xmlw.WriteStartElement(type+"Values");
+            xmlw.WriteStartElement(type + "Values");
             xmlw.WriteAttributeString("Count", values.Count.ToStringSafe());
             foreach (Value val in values)
             {
                 ProcessValue(val, xmlw);
-            } 
+            }
             xmlw.WriteEndElement();
-            
+
         }
 
-        private static void ProcessValue(Value val, XmlWriter xmlw, string type="")
+        private static void ProcessValue(Value val, XmlWriter xmlw, string type = "")
         {
-            xmlw.WriteStartElement(type+"Value");
+            xmlw.WriteStartElement(type + "Value");
             ConstantValue cvc = val as ConstantValue;
             ExpressionValue ev = val as ExpressionValue;
             ParameterFieldDiscreteValue pfdv = val as ParameterFieldDiscreteValue;
@@ -314,7 +310,7 @@ namespace rpt_diff
             ProcessFields(dd.FormulaFields, xmlw, "Formula");
             ProcessFilter(dd.GroupFilter, xmlw, "GroupFilter");
             ProcessGroups(dd.Groups, xmlw);
-            ProcessFields(dd.ParameterFields, xmlw,"Parameter");
+            ProcessFields(dd.ParameterFields, xmlw, "Parameter");
             ProcessFilter(dd.RecordFilter, xmlw, "RecordFilter");
             //ProcessFields(dd.ResultFields, xmlw, "Result"); // redundant only shows fields that are used in the report 
             ProcessFields(dd.RunningTotalFields, xmlw, "RunningTotal");
@@ -325,7 +321,7 @@ namespace rpt_diff
         }
 
 
-        private static void ProcessFilter(Filter filter, XmlWriter xmlw,string type)
+        private static void ProcessFilter(Filter filter, XmlWriter xmlw, string type)
         {
             xmlw.WriteStartElement(type);
             xmlw.WriteAttributeString("FormulaNullTreatment", filter.FormulaNullTreatment.ToStringSafe());
@@ -339,7 +335,7 @@ namespace rpt_diff
         {
             xmlw.WriteStartElement("FilterItems");
             xmlw.WriteAttributeString("Count", fis.Count.ToStringSafe());
-            foreach (FilterItem fi in fis) 
+            foreach (FilterItem fi in fis)
             {
                 ProcessFilterItem(fi, xmlw);
             }

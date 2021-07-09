@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
+﻿using System.Xml;
 
 using CrystalDecisions.ReportAppServer.ClientDoc;
 
@@ -36,12 +31,12 @@ namespace rpt_diff
             Controllers.ProcessCustomFunctionController(report.CustomFunctionController, xmlw);
             Controllers.ProcessDatabaseController(report.DatabaseController, xmlw);
             Controllers.ProcessDataDefController(report.DataDefController, xmlw);
-            Controllers.ProcessPrintOutputController(report.PrintOutputController,xmlw);
+            Controllers.ProcessPrintOutputController(report.PrintOutputController, xmlw);
             Controllers.ProcessReportDefController(report.ReportDefController, xmlw);
             ReportDefModel.ProcessReportOptions(report.ReportOptions, xmlw);
             Controllers.ProcessSubreportController(report.SubreportController, xmlw);
             DataDefModel.ProcessSummaryInfo(report.SummaryInfo, xmlw);
             xmlw.WriteEndElement();
-        }   
+        }
     }
 }

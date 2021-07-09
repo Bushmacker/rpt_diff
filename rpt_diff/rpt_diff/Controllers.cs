@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
+﻿using System.Xml;
 
 using CrystalDecisions.ReportAppServer.Controllers;
 
@@ -15,7 +10,7 @@ namespace rpt_diff
     {
         public static void ProcessCustomFunctionController(CustomFunctionController cfc, XmlWriter xmlw)
         {
-            DataDefModel.ProcessCustomFunctions(cfc.GetCustomFunctions(), xmlw); 
+            DataDefModel.ProcessCustomFunctions(cfc.GetCustomFunctions(), xmlw);
         }
         public static void ProcessDatabaseController(DatabaseController dc, XmlWriter xmlw)
         {
@@ -43,8 +38,8 @@ namespace rpt_diff
         {
             foreach (string Subreport in sc.GetSubreportNames())
             {
-                xmlw.WriteStartElement("Subreport");            
-                ProcessSubreportClientDocument(sc.GetSubreport(Subreport),xmlw);
+                xmlw.WriteStartElement("Subreport");
+                ProcessSubreportClientDocument(sc.GetSubreport(Subreport), xmlw);
                 ReportDefModel.ProcessSubreportLinks(sc.GetSubreportLinks(Subreport), xmlw);
                 xmlw.WriteEndElement();
             }

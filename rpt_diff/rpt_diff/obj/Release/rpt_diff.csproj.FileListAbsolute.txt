@@ -1,7 +1,0 @@
-d:\jb\projects\rpt_diff\rpt_diff\bin\Release\rpt_diff.exe.config
-d:\jb\projects\rpt_diff\rpt_diff\bin\Release\rpt_diff.exe
-d:\jb\projects\rpt_diff\rpt_diff\bin\Release\rpt_diff.pdb
-d:\jb\projects\rpt_diff\rpt_diff\obj\Release\rpt_diff.Properties.Resources.resources
-d:\jb\projects\rpt_diff\rpt_diff\obj\Release\rpt_diff.csproj.GenerateResource.Cache
-d:\jb\projects\rpt_diff\rpt_diff\obj\Release\rpt_diff.exe
-d:\jb\projects\rpt_diff\rpt_diff\obj\Release\rpt_diff.pdb

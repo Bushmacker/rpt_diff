@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ExtensionMethods
 {
     static class Extensions
-    {   
+    {
         /*
          *  ToStringSafe
          *  - converts object to text representation
